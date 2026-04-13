@@ -34,6 +34,25 @@ border-radius:10px;
 margin-top:10px;
 }
 
+input{
+padding:8px;
+border:none;
+border-radius:6px;
+background:#111827;
+color:#fff;
+margin-top:5px;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:6px;
+background:#3b82f6;
+color:#fff;
+cursor:pointer;
+margin-top:5px;
+}
+
 h2{color:#60a5fa}
 </style>
 </head>
@@ -52,9 +71,18 @@ h2{color:#60a5fa}
 <h2>当前用户</h2>
 <p id="user"></p>
 <p id="role"></p>
+<p id="score"></p>
 </div>
 
-<!-- 公司简介 -->
+<!-- 修改密码 -->
+<div class="card">
+<h2>修改密码</h2>
+<input id="oldpass" placeholder="旧密码">
+<input id="newpass" placeholder="新密码">
+<button onclick="changePwd()">修改密码</button>
+</div>
+
+<!-- 公司体系 -->
 <div class="card">
 <h2>公司体系</h2>
 <p>Astora Tech 是一个结构化数字组织，涵盖电竞、研发与内容系统。</p>
@@ -74,6 +102,7 @@ h2{color:#60a5fa}
 <h2>电竞体系</h2>
 <p>AG高玩会（会长：Edson）</p>
 <p>ZOO战队（队长：林靖贤）</p>
+<button onclick="addScore()">+1 积分</button>
 </div>
 
 <!-- 研发 -->
@@ -99,19 +128,66 @@ let user = localStorage.getItem("currentUser");
 let role = localStorage.getItem("currentRole");
 
 if(!user){
-location.href = "worker.html";
+location.href="worker.html";
 }
+
+/* ===== 用户数据 ===== */
+let users = JSON.parse(localStorage.getItem("users") || "{}");
 
 document.getElementById("user").innerText = "用户：" + user;
 document.getElementById("role").innerText = "权限：" + role;
 
-/* 任务 */
+/* 初始化积分 */
+if(!users[user].score){
+users[user].score = 0;
+}
+
+/* 显示积分 */
+function showScore(){
+document.getElementById("score").innerText = "积分：" + users[user].score;
+}
+showScore();
+
+/* ===== 改密码 ===== */
+function changePwd(){
+
+let oldp = document.getElementById("oldpass").value;
+let newp = document.getElementById("newpass").value;
+
+if(users[user].password !== oldp){
+alert("旧密码错误");
+return;
+}
+
+users[user].password = newp;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("修改成功");
+}
+
+/* ===== 积分 ===== */
+function addScore(){
+
+users[user].score++;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+showScore();
+}
+
+/* ===== 任务（绑定用户） ===== */
 function addTask(){
+
 let v = document.getElementById("task").value;
 if(!v) return;
 
 let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-tasks.push(v);
+
+tasks.push({
+user:user,
+text:v
+});
 
 localStorage.setItem("tasks", JSON.stringify(tasks));
 
@@ -119,15 +195,16 @@ load();
 }
 
 function load(){
+
 let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
 let box = document.getElementById("list");
 
-box.innerHTML = "";
+box.innerHTML="";
 
 tasks.forEach((t,i)=>{
 box.innerHTML += `
 <div class="card">
-${t}
+<b>${t.user}</b>：${t.text}
 <button onclick="del(${i})">删除</button>
 </div>
 `;
@@ -141,6 +218,7 @@ localStorage.setItem("tasks", JSON.stringify(tasks));
 load();
 }
 
+/* ===== 登出 ===== */
 function logout(){
 localStorage.clear();
 location.href="worker.html";
