@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>Astora OS v7.2｜企业后台</title>
+<title>Astora OS｜登录系统</title>
 
 <style>
 body{
@@ -10,153 +10,86 @@ margin:0;
 font-family:Arial;
 background:#05070d;
 color:#fff;
-}
-
-header{
 display:flex;
-justify-content:space-between;
-padding:18px 40px;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
 background:#0b0f1a;
-border-bottom:1px solid #1f2a37;
-}
-
-nav a{
-color:#aaa;
-margin-right:15px;
-text-decoration:none;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-padding:60px 20px;
-}
-
-.card{
-background:#0b0f1a;
-border:1px solid #1f2a37;
-padding:20px;
+padding:30px;
 border-radius:12px;
-margin-top:15px;
+border:1px solid #1f2a37;
+width:320px;
+}
+
+h2{
+text-align:center;
+color:#60a5fa;
 }
 
 input{
+width:100%;
 padding:10px;
-margin:5px;
-width:220px;
-border-radius:6px;
+margin-top:10px;
 border:none;
+border-radius:6px;
 background:#111827;
 color:#fff;
 }
 
 button{
-padding:10px 15px;
+width:100%;
+padding:10px;
+margin-top:15px;
 border:none;
 border-radius:6px;
 background:#3b82f6;
 color:#fff;
 cursor:pointer;
-margin-top:8px;
 }
 
-h2{color:#60a5fa}
-
-.small{color:#9ca3af;font-size:12px}
-
-.task{
-display:flex;
-justify-content:space-between;
-padding:6px;
-border-bottom:1px solid #1f2a37;
+.small{
+font-size:12px;
+color:#9ca3af;
+text-align:center;
+margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div><b>Astora OS v7.2 企业后台</b></div>
+<div class="box">
 
-<nav>
-<a href="index.html">首页</a>
-<a href="worker.html">后台</a>
-</nav>
-</header>
-
-<div class="container">
-
-<!-- LOGIN -->
-<div class="card" id="loginBox">
-
-<h2>系统登录</h2>
+<h2>Astora OS 登录</h2>
 
 <input id="user" placeholder="用户名">
-<br>
 <input id="pass" type="password" placeholder="密码">
-<br>
 
 <button onclick="login()">登录</button>
 
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none">
-
-<!-- USER INFO -->
-<div class="card">
-<h2>当前用户</h2>
-<p>用户：<span id="u"></span></p>
-<p>权限：<span id="r"></span></p>
-</div>
-
-<!-- HR PANEL -->
-<div class="card" id="hrPanel" style="display:none">
-
-<h2>HR / CEO 管理系统</h2>
-
-<input id="newUser" placeholder="用户名">
-<input id="newPass" placeholder="密码">
-<input id="newRole" placeholder="角色（CEO/HR/员工/电竞）">
-<button onclick="createUser()">创建用户</button>
-
-<h3>员工列表</h3>
-<div id="userList"></div>
-
-</div>
-
-<!-- TASK PANEL -->
-<div class="card" id="taskPanel">
-
-<h2>任务系统</h2>
-
-<input id="taskUser" placeholder="分配给谁">
-<input id="taskText" placeholder="任务内容">
-<button onclick="addTask()">分配任务</button>
-
-<h3>任务列表</h3>
-<div id="taskList"></div>
-
-</div>
-
-</div>
+<div class="small">没有账号？直接注册后登录（本地系统）</div>
 
 </div>
 
 <script>
 
-/* 初始化默认账号 */
+/* 初始化默认账号（第一次自动创建） */
 function init(){
+
 let users = JSON.parse(localStorage.getItem("users") || "{}");
 
 if(!users["CEO"]){
 users["CEO"] = {pass:"admin123", role:"CEO"};
 users["hr"] = {pass:"hr123", role:"HR"};
 users["edson"] = {pass:"123", role:"电竞"};
-}
 
 localStorage.setItem("users", JSON.stringify(users));
 }
+}
+
 init();
 
 /* 登录 */
@@ -177,102 +110,12 @@ alert("密码错误");
 return;
 }
 
-// 🧠 关键：写入真实角色（防伪造）
+/* 保存登录状态 */
 localStorage.setItem("currentUser", u);
 localStorage.setItem("currentRole", users[u].role);
 
-show();
-}
-
-/* 显示系统 */
-function show(){
-
-document.getElementById("loginBox").style.display="none";
-document.getElementById("dashboard").style.display="block";
-
-let u = localStorage.getItem("currentUser");
-let r = localStorage.getItem("currentRole");
-
-document.getElementById("u").innerText = u;
-document.getElementById("r").innerText = r;
-
-/* 🧠 权限控制（核心修复） */
-let hrPanel = document.getElementById("hrPanel");
-
-if(r === "HR" || r === "CEO"){
-hrPanel.style.display = "block";
-loadUsers();
-} else {
-hrPanel.style.display = "none";
-}
-
-loadTasks();
-}
-
-/* 创建用户（HR/CEO） */
-function createUser(){
-
-let u = document.getElementById("newUser").value;
-let p = document.getElementById("newPass").value;
-let r = document.getElementById("newRole").value;
-
-let users = JSON.parse(localStorage.getItem("users"));
-
-users[u] = {pass:p, role:r || "员工"};
-
-localStorage.setItem("users", JSON.stringify(users));
-
-loadUsers();
-}
-
-/* 用户列表 */
-function loadUsers(){
-
-let users = JSON.parse(localStorage.getItem("users"));
-let box = document.getElementById("userList");
-
-box.innerHTML = "";
-
-for(let u in users){
-
-let div = document.createElement("div");
-div.className = "task";
-div.innerText = `${u} ｜ ${users[u].role}`;
-
-box.appendChild(div);
-}
-}
-
-/* 任务系统 */
-function addTask(){
-
-let u = document.getElementById("taskUser").value;
-let t = document.getElementById("taskText").value;
-
-let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-
-tasks.push({user:u, text:t});
-
-localStorage.setItem("tasks", JSON.stringify(tasks));
-
-loadTasks();
-}
-
-function loadTasks(){
-
-let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-
-let box = document.getElementById("taskList");
-box.innerHTML = "";
-
-tasks.forEach(t=>{
-
-let div = document.createElement("div");
-div.className = "task";
-div.innerText = `👤 ${t.user} ｜ 📌 ${t.text}`;
-
-box.appendChild(div);
-});
+/* 🧠 v9.0核心：跳转后台 */
+location.href = "dashboard.html";
 }
 
 </script>

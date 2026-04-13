@@ -2,151 +2,186 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>阿斯托拉科技｜Astora-Tech</title>
+<title>Astora-Tech｜阿斯托拉科技</title>
 
 <style>
 body{
 margin:0;
 font-family:Arial;
-background:#05070d;
+background:#070a12;
 color:#fff;
 }
 
+/* NAV */
 header{
 display:flex;
 justify-content:space-between;
 padding:18px 40px;
-background:#0b0f1a;
-border-bottom:1px solid #1f2a37;
+background:rgba(10,14,25,0.8);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(255,255,255,0.08);
+position:sticky;
+top:0;
 }
 
 nav a{
 color:#aaa;
-margin-left:20px;
+margin-left:15px;
 text-decoration:none;
 font-size:14px;
 }
 
 nav a:hover{color:#fff}
 
+/* HERO */
 .hero{
-padding:120px 40px;
 text-align:center;
+padding:120px 20px;
 }
 
 .hero h1{
-font-size:52px;
+font-size:56px;
+background:linear-gradient(45deg,#6a7dff,#c06bff);
+-webkit-background-clip:text;
+color:transparent;
 }
 
 .hero p{
-color:#9ca3af;
+color:#aaa;
 margin-top:10px;
+font-size:16px;
 }
 
 .btn{
 display:inline-block;
 margin-top:20px;
-padding:12px 18px;
+padding:12px 20px;
 background:#3b82f6;
 color:#fff;
 border-radius:8px;
 text-decoration:none;
 }
 
+/* sections */
 section{
-padding:80px 40px;
-max-width:1100px;
+max-width:1000px;
 margin:auto;
+padding:60px 20px;
 }
 
 .grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
 }
 
 .card{
-background:#0b0f1a;
-border:1px solid #1f2a37;
+flex:1;
+min-width:220px;
+background:#0d1220;
+border:1px solid rgba(255,255,255,0.08);
 padding:20px;
 border-radius:12px;
 }
 
-h2{color:#60a5fa}
+/* footer */
+footer{
+text-align:center;
+padding:40px;
+color:#666;
+border-top:1px solid rgba(255,255,255,0.08);
+margin-top:60px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div><b>阿斯托拉科技</b> / Astora-Tech</div>
+<div><b>Astora-Tech</b></div>
 
 <nav>
-<a href="index.html">首页 Home</a>
-<a href="about.html">关于 About</a>
-<a href="dev.html">研发 R&D</a>
-<a href="esports.html">电竞 ESports</a>
-<a href="benefits.html">优势 Benefits</a>
-<a href="worker.html">员工系统 Worker</a>
+<a href="index.html">首页</a>
+<a href="about.html">关于</a>
+<a href="dev.html">研发</a>
+<a href="esports.html">电竞</a>
+<a href="benefits.html">优势</a>
+<a href="worker.html">员工系统</a>
 </nav>
 </header>
 
-<div class="hero" style="
-background:url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5');
-background-size:cover;
-background-position:center;
-">
-<div style="background:rgba(0,0,0,0.65);padding:120px 20px;">
+<!-- HERO -->
+<div class="hero">
 <h1>Astora-Tech</h1>
-<p>STRUCTURED DIGITAL ORGANIZATION</p>
-</div>
-</div>
-<h1>阿斯托拉科技</h1>
-<p>结构化数字组织 / Structured Digital Organization</p>
+<p>构建下一代数字内容 · 电竞体系 · 组织化生态</p>
+<p>Building Next-Gen Digital Ecosystem & Esports Structure</p>
 
-<a class="btn" href="about.html">进入公司 Enter Company</a>
+<a class="btn" href="worker.html">进入员工系统 / Enter System</a>
 </div>
 
+<!-- CORE -->
 <section>
-
-<h2>核心部门 Core Divisions</h2>
+<h2>核心体系</h2>
 
 <div class="grid">
 
 <div class="card">
-<h3>🎮 电竞体系 ESports Division</h3>
-<p>竞技战队与赛事结构系统</p>
-<p>Competitive team & tournament structure</p>
+<h3>🎮 电竞体系</h3>
+<p>AG高玩会 / ZOO战队</p>
 </div>
 
 <div class="card">
-<h3>🧠 MC开发部 MC Development</h3>
-<p>Minecraft内容与结构设计</p>
-<p>Minecraft content & system design</p>
+<h3>🧠 研发系统</h3>
+<p>Minecraft / 工业系统开发</p>
 </div>
 
 <div class="card">
-<h3>⚙ 工业系统 Industrial System</h3>
-<p>长期模拟与结构工程</p>
-<p>Long-term simulation engineering</p>
+<h3>🏢 组织管理</h3>
+<p>HR / CEO / 员工体系结构</p>
 </div>
 
 </div>
-
 </section>
 
+<!-- PURPOSE -->
 <section>
+<h2>公司宗旨</h2>
+<div class="card">
+<p>
+Astora-Tech 致力于构建长期稳定的数字生态系统，
+结合内容创作、电竞竞技与组织化管理体系，
+打造可持续发展的虚拟企业结构。
+</p>
+</div>
+</section>
 
-<h2>员工系统 Worker Portal</h2>
+<!-- ACHIEVEMENTS (虚构成就) -->
+<section>
+<h2>公司成就</h2>
+
+<div class="grid">
 
 <div class="card">
-<p>进入 Astora-Tech 内部员工系统</p>
-<p>Access internal employee management system</p>
-
-<a class="btn" href="worker.html">进入系统 Enter System</a>
+<h3>🏆 2026 电竞模拟赛冠军</h3>
+<p>AG高玩会获得区域模拟赛第一名</p>
 </div>
 
+<div class="card">
+<h3>🚀 系统架构v8发布</h3>
+<p>完成企业级Astora OS系统升级</p>
+</div>
+
+<div class="card">
+<h3>🌐 多人系统上线</h3>
+<p>支持多账号协同管理体系</p>
+</div>
+
+</div>
 </section>
+
+<footer>
+© 2026 Astora-Tech | Astora OS v8.0
+</footer>
 
 </body>
 </html>
