@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Astora Dashboard</title>
+</head>
+
+<body style="background:#05070d;color:white;font-family:Arial;">
+
+<h1>Astora OS Dashboard</h1>
+
+<p id="test">页面加载成功</p>
+
+<script>
+console.log("dashboard loaded");
+
+let user = localStorage.getItem("currentUser");
+
+if(!user){
+document.body.innerHTML = "<h2>未登录，正在返回登录页...</h2>";
+setTimeout(()=>location.href="worker.html",1000);
+}else{
+document.getElementById("test").innerText = "欢迎 " + user;
+}
+</script>
+
+</body>
+</html>
