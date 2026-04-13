@@ -2,26 +2,152 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>Astora Dashboard</title>
+<title>Astora OS 企业后台</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#05070d;
+color:#fff;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+padding:15px;
+background:#0b0f1a;
+border-bottom:1px solid #1f2a37;
+}
+
+.container{
+padding:20px;
+max-width:1000px;
+margin:auto;
+}
+
+.card{
+background:#0b0f1a;
+border:1px solid #1f2a37;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
+}
+
+h2{color:#60a5fa}
+</style>
 </head>
 
-<body style="background:#05070d;color:white;font-family:Arial;">
+<body>
 
-<h1>Astora OS Dashboard</h1>
+<header>
+<div><b>Astora OS 企业控制台</b></div>
+<button onclick="logout()">退出</button>
+</header>
 
-<p id="test">页面加载成功</p>
+<div class="container">
+
+<!-- 用户信息 -->
+<div class="card">
+<h2>当前用户</h2>
+<p id="user"></p>
+<p id="role"></p>
+</div>
+
+<!-- 公司简介 -->
+<div class="card">
+<h2>公司体系</h2>
+<p>Astora Tech 是一个结构化数字组织，涵盖电竞、研发与内容系统。</p>
+</div>
+
+<!-- 管理层 -->
+<div class="card">
+<h2>管理层</h2>
+<p>CEO：北笙凉风</p>
+<p>秘书：曼波</p>
+<p>HR：哈基樱</p>
+<p>电竞总监：Edson</p>
+</div>
+
+<!-- 电竞 -->
+<div class="card">
+<h2>电竞体系</h2>
+<p>AG高玩会（会长：Edson）</p>
+<p>ZOO战队（队长：林靖贤）</p>
+</div>
+
+<!-- 研发 -->
+<div class="card">
+<h2>研发体系</h2>
+<p>MC开发部（哈基樱）</p>
+<p>工业系统（北笙凉风）</p>
+</div>
+
+<!-- 任务 -->
+<div class="card">
+<h2>任务系统</h2>
+<input id="task" placeholder="输入任务">
+<button onclick="addTask()">添加</button>
+<div id="list"></div>
+</div>
+
+</div>
 
 <script>
-console.log("dashboard loaded");
 
 let user = localStorage.getItem("currentUser");
+let role = localStorage.getItem("currentRole");
 
 if(!user){
-document.body.innerHTML = "<h2>未登录，正在返回登录页...</h2>";
-setTimeout(()=>location.href="worker.html",1000);
-}else{
-document.getElementById("test").innerText = "欢迎 " + user;
+location.href = "worker.html";
 }
+
+document.getElementById("user").innerText = "用户：" + user;
+document.getElementById("role").innerText = "权限：" + role;
+
+/* 任务 */
+function addTask(){
+let v = document.getElementById("task").value;
+if(!v) return;
+
+let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+tasks.push(v);
+
+localStorage.setItem("tasks", JSON.stringify(tasks));
+
+load();
+}
+
+function load(){
+let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+let box = document.getElementById("list");
+
+box.innerHTML = "";
+
+tasks.forEach((t,i)=>{
+box.innerHTML += `
+<div class="card">
+${t}
+<button onclick="del(${i})">删除</button>
+</div>
+`;
+});
+}
+
+function del(i){
+let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+tasks.splice(i,1);
+localStorage.setItem("tasks", JSON.stringify(tasks));
+load();
+}
+
+function logout(){
+localStorage.clear();
+location.href="worker.html";
+}
+
+load();
+
 </script>
 
 </body>
