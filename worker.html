@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>Astora OS｜登录系统</title>
+<title>Astora OS 登录</title>
 
 <style>
 body{
@@ -24,11 +24,6 @@ border:1px solid #1f2a37;
 width:320px;
 }
 
-h2{
-text-align:center;
-color:#60a5fa;
-}
-
 input{
 width:100%;
 padding:10px;
@@ -42,12 +37,17 @@ color:#fff;
 button{
 width:100%;
 padding:10px;
-margin-top:15px;
+margin-top:10px;
 border:none;
 border-radius:6px;
 background:#3b82f6;
 color:#fff;
 cursor:pointer;
+}
+
+h2{
+text-align:center;
+color:#60a5fa;
 }
 
 .small{
@@ -62,41 +62,52 @@ margin-top:10px;
 <body>
 
 <div class="box">
-
-<h2>Astora OS 登录</h2>
+<h2>Astora OS Login</h2>
 
 <input id="user" placeholder="用户名">
 <input id="pass" type="password" placeholder="密码">
 
 <button onclick="login()">登录</button>
+<button onclick="register()">注册</button>
 
-<div class="small">没有账号？直接注册后登录（本地系统）</div>
-
+<div class="small">首次使用可注册账号（本地系统）</div>
 </div>
 
 <script>
 
-/* 初始化默认账号（第一次自动创建） */
+/* =========================
+   初始化企业账号
+========================= */
 function init(){
 
 let users = JSON.parse(localStorage.getItem("users") || "{}");
 
-if(!users["CEO"]){
-users["CEO"] = {pass:"admin123", role:"CEO"};
-users["hr"] = {pass:"hr123", role:"HR"};
-users["edson"] = {pass:"123", role:"电竞"};
+let defaults = {
+"北笙凉风": {password:"123456", role:"CEO"},
+"曼波": {password:"123456", role:"Secretary"},
+"Edson": {password:"123456", role:"Director"},
+"哈基樱": {password:"123456", role:"HR"},
+"林靖贤": {password:"123456", role:"Manager"}
+};
+
+for(let k in defaults){
+if(!users[k]){
+users[k] = defaults[k];
+}
+}
 
 localStorage.setItem("users", JSON.stringify(users));
-}
 }
 
 init();
 
-/* 登录 */
+/* =========================
+   登录
+========================= */
 function login(){
 
-let u = document.getElementById("user").value;
-let p = document.getElementById("pass").value;
+let u = document.getElementById("user").value.trim();
+let p = document.getElementById("pass").value.trim();
 
 let users = JSON.parse(localStorage.getItem("users") || "{}");
 
@@ -105,17 +116,45 @@ alert("账号不存在");
 return;
 }
 
-if(users[u].pass !== p){
+if(users[u].password !== p){
 alert("密码错误");
 return;
 }
 
-/* 保存登录状态 */
 localStorage.setItem("currentUser", u);
 localStorage.setItem("currentRole", users[u].role);
 
-/* 🧠 v9.0核心：跳转后台 */
 location.href = "dashboard.html";
+}
+
+/* =========================
+   注册（你新增的）
+========================= */
+function register(){
+
+let u = document.getElementById("user").value.trim();
+let p = document.getElementById("pass").value.trim();
+
+if(!u || !p){
+alert("请输入账号和密码");
+return;
+}
+
+let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+if(users[u]){
+alert("该账号已存在");
+return;
+}
+
+users[u] = {
+password: p,
+role: "Worker"
+};
+
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("注册成功，可以登录了");
 }
 
 </script>
